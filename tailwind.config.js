@@ -51,6 +51,10 @@ module.exports = {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
+        'neon-blue': '#00a0e9',
+        'cyber-black': '#0a0a12',
+        'hologram-purple': '#9d00ff',
+        'electric-cyan': '#00fff0'
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -39,18 +39,21 @@ export default function Home() {
     offset: ["start start", "end start"]
   })
 
-  // 背景视差效果
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"])
-  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.2])
+  // 增强视差效果
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"])
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "120%"])
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.3])
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.6])
 
-  // 鼠标视差效果
+  // 鼠标视差效果 - 使用spring增加平滑度
+  const mouseX = useSpring(0, { stiffness: 100, damping: 30 })
+  const mouseY = useSpring(0, { stiffness: 100, damping: 30 })
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [mouseXY, setMouseXY] = useState({ x: 0, y: 0 })
   
-  // 模拟电流效果的状态
+  // 系统状态效果
   const [electricPulse, setElectricPulse] = useState(0)
-  const [connectionStatus, setConnectionStatus] = useState("正在建立连接...")
+  const [connectionStatus, setConnectionStatus] = useState("初始化系统...")
+  const [connectionProgress, setConnectionProgress] = useState(0)
   const [misakaId] = useState(10000 + Math.floor(Math.random() * 10000))
   const [activePulse, setActivePulse] = useState(false)
   const [pulseColor, setPulseColor] = useState('#00a0e9')
@@ -129,58 +132,95 @@ export default function Home() {
   if (!mounted) return null
 
   return (
-    <div ref={containerRef} className="relative min-h-screen overflow-hidden font-mono">
-      {/* 动态背景 - 学园都市电磁科技风格 */}
-      <div className="fixed inset-0 bg-gradient-to-br from-[#0a0a12] to-gray-900 -z-10" />
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,160,233,0.05),transparent_70%)] -z-10" />
-      <div className="fixed inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.8),rgba(0,0,0,0.2),rgba(0,0,0,0.8))] -z-10" />
+    <div ref={containerRef} className="relative min-h-screen overflow-hidden font-jetbrains">
+      {/* 高级动态背景 - 全息科技风格 */}
+      <div className="fixed inset-0 bg-gradient-to-br from-[#0a0a12] via-[#0c1a2a] to-[#0a0a1a] -z-10" />
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,160,233,0.08),transparent_80%)] -z-10" />
+      <div className="fixed inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.9),rgba(0,0,0,0.3),rgba(0,0,0,0.9))] -z-10" />
       
-      {/* 添加霓虹紫的光效 */}
+      {/* 高级光效系统 */}
       <div className="fixed inset-0 overflow-hidden -z-5">
-        <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#9d00ff]/10 blur-3xl rounded-full"></div>
-        <div className="absolute top-1/4 -left-20 w-60 h-60 bg-[#00a0e9]/10 blur-3xl rounded-full"></div>
+        <motion.div 
+          className="absolute -top-20 -right-20 w-80 h-80 bg-[#9d00ff]/15 blur-3xl rounded-full"
+          animate={{
+            opacity: [0.3, 0.5, 0.3],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div 
+          className="absolute top-1/4 -left-20 w-80 h-80 bg-[#00a0e9]/15 blur-3xl rounded-full"
+          animate={{
+            opacity: [0.2, 0.4, 0.2],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-1/4 right-1/4 w-60 h-60 bg-[#00fff0]/10 blur-3xl rounded-full"
+          animate={{
+            opacity: [0.1, 0.3, 0.1],
+            scale: [1, 1.15, 1],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 4
+          }}
+        />
       </div>
       
       {/* 集成DNA双螺旋背景 */}
       <DNABackground />
       
-      {/* 动态光点 */}
+      {/* 动态光点跟随 */}
       <motion.div 
-        className="fixed w-40 h-40 rounded-full bg-[#00a0e9]/10 blur-3xl -z-5"
+        className="fixed w-60 h-60 rounded-full bg-gradient-to-br from-[#00a0e9]/10 to-[#00fff0]/5 blur-3xl -z-5"
         animate={{
-          x: mouseXY.x,
-          y: mouseXY.y,
+          x: mousePosition.x,
+          y: mousePosition.y,
         }}
         transition={{
           type: "spring",
-          damping: 30,
-          stiffness: 50
+          damping: 25,
+          stiffness: 40
         }}
         style={{ 
-          left: "calc(50% - 5rem)", 
-          top: "calc(30% - 5rem)" 
+          left: "calc(50% - 7.5rem)", 
+          top: "calc(30% - 7.5rem)" 
         }}
       />
 
-      {/* 电路网格效果 */}
+      {/* 高级电路网格效果 */}
       <div 
-        className="fixed inset-0 -z-5 grid-background" 
+        className="fixed inset-0 -z-5" 
         style={{
           backgroundImage: `
             linear-gradient(to right, rgba(0, 160, 233, 0.03) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 160, 233, 0.03) 1px, transparent 1px)
+            linear-gradient(to bottom, rgba(0, 160, 233, 0.03) 1px, transparent 1px),
+            radial-gradient(circle, rgba(0, 160, 233, 0.01) 1px, transparent 1px)
           `,
-          backgroundSize: '50px 50px',
+          backgroundSize: '50px 50px, 50px 50px, 100px 100px',
         }}
       />
       
-      {/* 电磁波纹动画 - 简化版本 */}
+      {/* 多层电磁波纹动画 */}
       <div className="fixed inset-0 -z-5 overflow-hidden pointer-events-none">
         <motion.div
           className="absolute rounded-full border border-blue-400/10"
           style={{
-            width: 1500,
-            height: 1500,
+            width: 1800,
+            height: 1800,
             left: '50%',
             top: '50%',
             x: '-50%',
@@ -194,6 +234,27 @@ export default function Home() {
             duration: 20,
             repeat: Infinity,
             ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute rounded-full border border-purple-400/5"
+          style={{
+            width: 1200,
+            height: 1200,
+            left: '50%',
+            top: '50%',
+            x: '-50%',
+            y: '-50%',
+          }}
+          animate={{
+            scale: [1.2, 1.8, 1.2],
+            opacity: [0.05, 0.15, 0.05],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 5
           }}
         />
       </div>
@@ -384,52 +445,7 @@ export default function Home() {
             </div>
             <Button
               onClick={navigateToRegister}
-              className="group px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white border-0 shadow-lg shadow-blue-500/20"
-            >
-              节点注册
-              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-            </Button>
-          </div>
-        </motion.div>
-        
-        {/* 底部版权信息 */}
-        <motion.div
-          className="flex flex-col items-center justify-center my-12 space-y-1 text-xs text-center text-blue-400/60"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.6, duration: 1 }}
-        >
-          <div>御坂网络 - Protocol v2.0</div>
-          <div>学园都市第七学区 - 机密等级3 - 仅限御坂网络成员访问</div>
-          <div>「此终端由Last Order管理维护」</div>
-        </motion.div>
-      </div>
-
-      {/* 流光脉冲效果 */}
-      <PulseEffect 
-        active={activePulse} 
-        color={pulseColor} 
-        position={pulsePosition} 
-      />
-
-      {/* 添加CSS动画 */}
-      <style jsx global>{`
-        @keyframes glow {
-          0%, 100% { opacity: 0; transform: translateX(-100%); }
-          50% { opacity: 0.8; transform: translateX(100%); }
-        }
-        .glow-animation {
-          animation: glow 5s infinite;
-        }
-
-        /* 电子脉冲动画 */
-        @keyframes pulse {
-          0%, 100% { opacity: 0.2; }
-          50% { opacity: 0.8; }
-        }
-        
-        .pulse-animation {
-          animation: pulse 2s infinite;
+              className="group px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white border-0 shadow-lg shadow- 2s infinite;
         }
         
         /* 电网背景动画 */

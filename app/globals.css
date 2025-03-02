@@ -189,8 +189,39 @@ body {
 
 .hologram-card::before {
   content: '';
-  @apply absolute inset-0 -z-10 m-[-1px] bg-gradient-to-r from-neon-blue to-hologram-purple;
+  @apply absolute inset-0 -z-10 m-[-1px];
+  background: linear-gradient(to right, var(--neon-blue), var(--hologram-purple));
   mask: var(--polygon-border);
+}
+
+/* 平滑过渡效果 */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 霓虹文字效果 */
+.neon-text {
+  text-shadow: 0 0 10px var(--neon-blue),
+               0 0 20px var(--neon-blue),
+               0 0 30px var(--neon-blue);
+}
+
+/* 全息文字效果 */
+.hologram-text {
+  background: linear-gradient(45deg, var(--neon-blue), var(--hologram-purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hologram 8s ease infinite;
+}
+
+@keyframes hologram {
+  0%, 100% {
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    filter: hue-rotate(60deg);
+  }
 }
 
 /* 平滑过渡效果 */
