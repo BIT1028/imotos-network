@@ -1,14 +1,12 @@
 import React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
 import "./globals.css"
 import { ClientProviders } from "@/components/client-providers"
-
-const inter = Inter({ subsets: ["latin"] })
+import { fontVariables, spaceGrotesk } from "./fonts"
 
 export const metadata: Metadata = {
-  title: "Sisters Network",
-  description: "A social network for sisters",
+  title: "iMotos Network",
+  description: "御坂网络 - 高级脑电波通信系统",
 }
 
 export default function RootLayout({
@@ -17,8 +15,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning className={fontVariables}>
+      <body className={`${spaceGrotesk.className} bg-cyber-black text-foreground`}>
         <ClientProviders>
           {children}
         </ClientProviders>

@@ -32,6 +32,16 @@
   --ring: 224 71.4% 4.1%;
 
   --radius: 0.5rem;
+
+  /* 自定义颜色 */
+  --neon-blue: #00a0e9;
+  --cyber-black: #0a0a12;
+  --hologram-purple: #9d00ff;
+
+  /* 玻璃态效果 */
+  --glass-bg: rgba(10, 10, 18, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 body {
@@ -69,20 +79,58 @@ body {
   animation-delay: 500ms;
 }
 
-/* Custom font classes */
-.font-futura {
-  font-family: var(--font-futura), sans-serif;
-}
-
-.font-montserrat {
-  font-family: var(--font-montserrat), sans-serif;
-}
-
+/* 自定义字体类 */
 .font-jetbrains {
   font-family: var(--font-jetbrains), monospace;
 }
 
+.font-orbitron {
+  font-family: var(--font-orbitron), sans-serif;
+}
+
 .font-noto-jp {
   font-family: var(--font-noto-jp), sans-serif;
+}
+
+.font-space-grotesk {
+  font-family: var(--font-space-grotesk), sans-serif;
+}
+
+/* 玻璃态效果类 */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* 平滑过渡效果 */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 霓虹文字效果 */
+.neon-text {
+  text-shadow: 0 0 10px var(--neon-blue),
+               0 0 20px var(--neon-blue),
+               0 0 30px var(--neon-blue);
+}
+
+/* 全息文字效果 */
+.hologram-text {
+  background: linear-gradient(45deg, var(--neon-blue), var(--hologram-purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hologram 8s ease infinite;
+}
+
+@keyframes hologram {
+  0%, 100% {
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    filter: hue-rotate(60deg);
+  }
 }
 
