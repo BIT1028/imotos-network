@@ -3,13 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 0%;
+  /* 基础颜色系统 */
+  --background: 222 47% 5%;
   --foreground: 210 40% 98%;
 
-  --card: 222 47% 11%;
+  --card: 222 47% 8%;
   --card-foreground: 210 40% 98%;
 
-  --popover: 222 47% 11%;
+  --popover: 222 47% 8%;
   --popover-foreground: 210 40% 98%;
 
   --primary: 217 91% 60%;
@@ -33,20 +34,38 @@
 
   --radius: 0.5rem;
 
-  /* 自定义颜色 */
+  /* 主题色系 */
   --neon-blue: #00a0e9;
+  --neon-blue-glow: rgba(0, 160, 233, 0.5);
   --cyber-black: #0a0a12;
   --hologram-purple: #9d00ff;
+  --hologram-purple-glow: rgba(157, 0, 255, 0.5);
+  --electric-cyan: #00fff0;
+  --electric-cyan-glow: rgba(0, 255, 240, 0.5);
 
   /* 玻璃态效果 */
   --glass-bg: rgba(10, 10, 18, 0.7);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  
+  /* 全息投影效果 */
+  --hologram-bg: linear-gradient(135deg, var(--neon-blue-glow) 0%, var(--hologram-purple-glow) 100%);
+  --hologram-border: linear-gradient(to right, var(--neon-blue) 0%, var(--hologram-purple) 100%);
+  
+  /* 低多边形边框 */
+  --polygon-border: polygon(
+    0 25%, 16% 0, 84% 0, 100% 25%,
+    100% 75%, 84% 100%, 16% 100%, 0 75%
+  );
 }
 
 body {
-  background-color: black;
-  color: white;
+  background-color: var(--cyber-black);
+  color: var(--foreground);
+  font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @keyframes pulse {
@@ -79,29 +98,99 @@ body {
   animation-delay: 500ms;
 }
 
-/* 自定义字体类 */
+/* 字体系统 */
 .font-jetbrains {
-  font-family: var(--font-jetbrains), monospace;
+  font-family: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: -0.02em;
 }
 
 .font-orbitron {
-  font-family: var(--font-orbitron), sans-serif;
+  font-family: var(--font-orbitron), system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .font-noto-jp {
   font-family: var(--font-noto-jp), sans-serif;
+  font-feature-settings: "palt";
 }
 
 .font-space-grotesk {
-  font-family: var(--font-space-grotesk), sans-serif;
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  letter-spacing: -0.03em;
 }
 
-/* 玻璃态效果类 */
+/* 标题系统 */
+.title-large {
+  @apply font-orbitron text-4xl md:text-5xl lg:text-6xl font-bold;
+  background: var(--hologram-bg);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 20px var(--neon-blue-glow);
+}
+
+.title-medium {
+  @apply font-space-grotesk text-2xl md:text-3xl font-bold;
+  background: linear-gradient(to right, var(--neon-blue), var(--electric-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.title-small {
+  @apply font-jetbrains text-lg md:text-xl font-medium;
+  color: var(--neon-blue);
+  text-shadow: 0 0 10px var(--neon-blue-glow);
+}
+
+/* 界面元素样式 */
 .glass-panel {
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
+  @apply rounded-lg transition-all duration-300;
+}
+
+.glass-panel-hover {
+  @apply hover:border-opacity-30 hover:bg-opacity-80;
+  box-shadow: 0 0 20px var(--neon-blue-glow);
+}
+
+.cyber-button {
+  @apply relative overflow-hidden rounded-lg px-6 py-3 font-jetbrains text-sm font-medium transition-all duration-300;
+  background: linear-gradient(45deg, var(--neon-blue), var(--electric-cyan));
+  border: 1px solid var(--neon-blue);
+  box-shadow: 0 0 20px var(--neon-blue-glow);
+}
+
+.cyber-button:hover {
+  @apply transform scale-105;
+  box-shadow: 0 0 30px var(--neon-blue-glow);
+}
+
+.cyber-button::before {
+  content: '';
+  @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
+}
+
+.cyber-button:hover::before {
+  @apply opacity-20;
+}
+
+.hologram-card {
+  @apply relative overflow-hidden rounded-xl p-6;
+  background: var(--hologram-bg);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  backdrop-filter: blur(20px);
+}
+
+.hologram-card::before {
+  content: '';
+  @apply absolute inset-0 -z-10 m-[-1px] bg-gradient-to-r from-neon-blue to-hologram-purple;
+  mask: var(--polygon-border);
 }
 
 /* 平滑过渡效果 */
